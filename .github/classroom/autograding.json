@@ -1,0 +1,94 @@
+{
+  "tests": [
+    {
+      "name": "test_moves1",
+      "setup": "sudo -H pip3 install pytest",
+      "run": "pytest eightpuzzle_tester.py::test_moves1",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 2,
+      "points": 5
+    },
+    {
+      "name": "test_moves2",
+      "setup": "sudo -H pip3 install pytest",
+      "run": "pytest eightpuzzle_tester.py::test_moves2",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 2,
+      "points": 5
+    },
+    {
+      "name": "test_moves3",
+      "setup": "sudo -H pip3 install pytest",
+      "run": "pytest eightpuzzle_tester.py::test_moves3",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 2,
+      "points": 5
+    },
+    {
+      "name": "test_neighbor1",
+      "setup": "sudo -H pip3 install pytest",
+      "run": "pytest eightpuzzle_tester.py::test_neighbor1",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 2,
+      "points": 7
+    },
+    {
+      "name": "test_neighbor2",
+      "setup": "sudo -H pip3 install pytest",
+      "run": "pytest eightpuzzle_tester.py::test_neighbor2",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 2,
+      "points": 7
+    },
+    {
+      "name": "test_neighbor3",
+      "setup": "sudo -H pip3 install pytest",
+      "run": "pytest eightpuzzle_tester.py::test_neighbor3",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 2,
+      "points": 7
+    },
+    {
+      "name": "test_astar1",
+      "setup": "sudo -H pip3 install pytest",
+      "run": "pytest eightpuzzle_tester.py::test_astar1",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 4,
+      "points": 13
+    },
+    {
+      "name": "test_astar2",
+      "setup": "sudo -H pip3 install pytest",
+      "run": "pytest eightpuzzle_tester.py::test_astar2",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 4,
+      "points": 13
+    },
+    {
+      "name": "test_astar3",
+      "setup": "sudo -H pip3 install pytest",
+      "run": "pytest eightpuzzle_tester.py::test_astar3",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 4,
+      "points": 13
+    }
+  ]
+}
