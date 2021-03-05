@@ -212,11 +212,11 @@ def main():
     
     agent = Agent()
     goal = Puzzle([[' ', 1, 2], [3, 4, 5], [6, 7, 8]])
-    #path = agent.astar(puzzle, goal)
+    path = agent.astar(puzzle, goal)
     # Random walk agent call
     #path = agent.randomWalk(puzzle, goal)
     # Hill Climbing call
-    path = agent.hillClimbing(puzzle, goal)
+    #path = agent.hillClimbing(puzzle, goal)
     
     while path:
         move = path.pop(0)
