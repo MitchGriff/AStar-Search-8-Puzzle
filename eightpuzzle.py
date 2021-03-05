@@ -1,5 +1,6 @@
 import copy
 import time
+import random
 from queue import PriorityQueue
 
 
@@ -82,6 +83,7 @@ class Puzzle:
         # Return new Puzzle obj
         return Puzzle(retPuzzle, self.path + move)
 
+
     def h(self, goal):
         """Compute the distance heuristic from this instance to the goal."""
         # YOU FILL THIS IN
@@ -106,13 +108,15 @@ class Puzzle:
         # Misplaced tiles heuristic
         misplaced = 0
 
-        for row in self.grid:
-            for num in row:
-                goalLocation = goal.findLocation(num)
-                currLocation = self.findLocation(num)
-                if goalLocation != currLocation:
-                    misplaced = misplaced + 1
+        tempGrid = copy.deepcopy(self.grid)
+        for i in range(3):
+            for j in range(3):
+                if tempGrid[i][j] != goal.grid[i][j] and tempGrid[i][j] != ' ':
+                    misplaced += 1
 
+        # Add previous nodes to it
+        g = len(self.path)
+        misplaced += g
         return misplaced
 
 class Agent:
@@ -129,24 +133,73 @@ class Agent:
         # Finished list[]
         finished = []
         # Push starting puzzle onto queue
+        #   Use Manhattan Distance
         frontier.put((puzzle.h(goal), puzzle.path, puzzle))
-
+        #   Use the misplaced tiles heuristic
+        #frontier.put((puzzle.misplacedHeuristic(goal), puzzle.path, puzzle))
+        nodesExplored = 0
         while frontier.qsize() > 0:
             currentF, currentPath, currentPuzzle = frontier.get()
-            currentPuzzle.display()
+            #currentPuzzle.display()
             if currentPuzzle.grid == goal.grid:
                 returnPath = [char for char in currentPuzzle.path]
                 stopTime = time.perf_counter()
                 print(f"Time completed in {stopTime - startTime:0.5f} seconds")
+                print("Nodes Explored:", nodesExplored)
                 return returnPath
             finished.append((currentF, currentPath, currentPuzzle))
             for move in currentPuzzle.moves():
                 # Check one of the moves
                 tempPuzz = currentPuzzle.neighbor(move)
                 # Create a tuple to be put onto the checked list
+                #   Use Manhattan Distance
                 tempTup = (tempPuzz.h(goal), tempPuzz.path, tempPuzz)
+                #   Use the misplaced tiles heuristic
+                #tempTup = (tempPuzz.misplacedHeuristic(goal), tempPuzz.path, tempPuzz)
+                nodesExplored += 1
                 if tempTup not in finished:
                     frontier.put(tempTup)
+
+
+    def randomWalk(self, puzzle, goal):
+        startTime = time.perf_counter()
+
+        counter = 0
+        while (puzzle.grid != goal.grid):
+            potentialMoves = []
+            for move in puzzle.moves():
+                potentialMoves.append(move)
+            new_grid = puzzle.neighbor(random.choice(potentialMoves))
+            if new_grid.grid == goal.grid:
+                finishTime = time.perf_counter()
+                print(f"Time completed in {finishTime - startTime:0.5f} seconds")
+                print(counter)
+                return list(new_grid.path)
+            counter = counter + 1
+            puzzle = new_grid
+
+
+    def hillClimbing(self, puzzle, goal):
+        neighbor = PriorityQueue()
+        current = PriorityQueue()
+
+        current.put((puzzle.h(goal), puzzle.path, puzzle))
+
+        while not current.empty():
+            currentH, currentPathLen, new_grid = current.get()
+
+            if new_grid.grid == goal.grid:
+                return list(new_grid.path)
+            else:
+                for move in new_grid.moves():
+                    childNode = new_grid.neighbor(move)
+                    neighbor.put((childNode.h(goal), childNode.path, childNode))
+                neighborH, neighborPathLen, neighbor_grid = neighbor.get()
+                neighbor_grid.display()
+                if neighbor_grid == goal.grid or neighborH >= currentH:
+                    return list(neighbor_grid.path)
+                else:
+                    current.put((neighbor_grid.h(goal), neighbor_grid.path, neighbor_grid))
 
 
 
@@ -159,7 +212,11 @@ def main():
     
     agent = Agent()
     goal = Puzzle([[' ', 1, 2], [3, 4, 5], [6, 7, 8]])
-    path = agent.astar(puzzle, goal)
+    #path = agent.astar(puzzle, goal)
+    # Random walk agent call
+    #path = agent.randomWalk(puzzle, goal)
+    # Hill Climbing call
+    path = agent.hillClimbing(puzzle, goal)
     
     while path:
         move = path.pop(0)
